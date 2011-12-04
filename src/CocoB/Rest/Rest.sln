@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rest.WindowsPhone.Sample", "Rest.WindowsPhone.Sample\Rest.WindowsPhone.Sample.csproj", "{B4C398CC-8FE6-44C9-BAA4-C88B9E04799A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rest.WindowsPhone", "Rest.WindowsPhone\Rest.WindowsPhone.csproj", "{3761E013-0067-4886-86B7-3361095335C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rest.WindowsPhone.Tests", "Rest.WindowsPhone.Tests\Rest.WindowsPhone.Tests.csproj", "{53B11CDF-ADF0-4F2D-A7F8-842B77D4899B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DB1D6AC7-3966-46FA-BE66-265A67E8CFBB}"
+	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
+		Rest.vsmdi = Rest.vsmdi
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Rest.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B4C398CC-8FE6-44C9-BAA4-C88B9E04799A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4C398CC-8FE6-44C9-BAA4-C88B9E04799A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4C398CC-8FE6-44C9-BAA4-C88B9E04799A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B4C398CC-8FE6-44C9-BAA4-C88B9E04799A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4C398CC-8FE6-44C9-BAA4-C88B9E04799A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4C398CC-8FE6-44C9-BAA4-C88B9E04799A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{3761E013-0067-4886-86B7-3361095335C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3761E013-0067-4886-86B7-3361095335C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3761E013-0067-4886-86B7-3361095335C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3761E013-0067-4886-86B7-3361095335C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53B11CDF-ADF0-4F2D-A7F8-842B77D4899B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53B11CDF-ADF0-4F2D-A7F8-842B77D4899B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53B11CDF-ADF0-4F2D-A7F8-842B77D4899B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53B11CDF-ADF0-4F2D-A7F8-842B77D4899B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
