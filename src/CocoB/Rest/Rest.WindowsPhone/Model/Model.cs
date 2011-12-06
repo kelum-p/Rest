@@ -18,21 +18,19 @@ namespace CocoB.Rest.WindowsPhone.Model
     {
         private readonly HttpWebClient _webClient;
 
-        private Model(HttpWebClient webClient)
+        public Model()
         {
-            _webClient = webClient;
+            _webClient = CreateWebClient();
         }
 
-        /// <summary>
-        /// Creates a new Model.
-        /// Uses Headers property to get HTTP headers.
-        /// </summary>
-        /// <returns></returns>
-        public Model Create()
+        private HttpWebClient CreateWebClient()
         {
-            var headers = Headers;
-            var webClient = HttpWebClient.Create(headers);
-            return new Model(webClient);
+            return InitializeWebClient();
+        }
+
+        internal virtual HttpWebClient InitializeWebClient()
+        {
+           return HttpWebClient.Create(Headers); 
         }
 
         /// <summary>
@@ -63,7 +61,7 @@ namespace CocoB.Rest.WindowsPhone.Model
                     {
                         var response = eventArgs.Response;
                         var decodedResponse = Encoding.GetString(response, 0, response.Length);
-                        Parse(decodedResponse);
+                        Parse(decodedResponse); // TODO: call error on parse failure
                         success(this);
                     }
                     else
@@ -85,6 +83,7 @@ namespace CocoB.Rest.WindowsPhone.Model
 
         /// <summary>
         /// Override to set the encoding that will be used to decode the server response
+        /// Defaults to UTF8
         /// </summary>
         protected virtual Encoding Encoding
         {
@@ -95,9 +94,10 @@ namespace CocoB.Rest.WindowsPhone.Model
         /// Override to set custom parsing logic.
         /// </summary>
         /// <param name="response"> Decoded server response </param>
-        protected virtual void Parse(string response)
+        /// <returns> Dictionary of parsed objects </returns>
+        protected virtual Dictionary<string, string> Parse(string response)
         {
-            
+            return new Dictionary<string, string>();
         }
     }
 }
