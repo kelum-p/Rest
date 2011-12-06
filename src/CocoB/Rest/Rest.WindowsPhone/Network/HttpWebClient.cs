@@ -7,6 +7,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -52,15 +53,25 @@ namespace CocoB.Rest.WindowsPhone.Network
 
     internal abstract class HttpWebClient
     {
+
+        #region Member Variables
+
         private static readonly Logger Log = Logger.GetCurrentClassLogger();
 
-        private static readonly Worker NetwotkWorker = new WorkerImpl();
+        private static readonly Worker NetworkWorker = new WorkerImpl("Network Worker");
+
+        #endregion
 
         #region Constructors
 
         public static HttpWebClient Create()
         {
-            return new HttpWebClientImpl(NetwotkWorker);
+            return new HttpWebClientImpl(NetworkWorker);
+        }
+
+        public static HttpWebClient Create(Dictionary<string, string> headers)
+        {
+            return new HttpWebClientImpl(NetworkWorker, headers);
         }
 
         #endregion
@@ -77,7 +88,7 @@ namespace CocoB.Rest.WindowsPhone.Network
 
         protected void TriggerResponseAvailableEvent(HttpWebResponse webResponse)
         {
-            NetwotkWorker.QueueJob(() => ReplyResponse(webResponse));
+            NetworkWorker.QueueJob(() => ReplyResponse(webResponse));
         }
 
         private void ReplyResponse(HttpWebResponse webResponse)

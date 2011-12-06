@@ -15,6 +15,8 @@ namespace CocoB.Rest.WindowsPhone.Core.Concurrency
 {
     public class WorkerImpl : Worker
     {
+        private readonly string _name;
+
         #region Member Variables
 
         private readonly Queue<Action> _jobs = new Queue<Action>();
@@ -25,8 +27,9 @@ namespace CocoB.Rest.WindowsPhone.Core.Concurrency
 
         #region Constructors
 
-        public WorkerImpl()
+        public WorkerImpl(string name)
         {
+            _name = name;
             _worker.DoWork += ProcessJobs;
             _worker.RunWorkerAsync();
         }
@@ -46,6 +49,7 @@ namespace CocoB.Rest.WindowsPhone.Core.Concurrency
 
         private void ProcessJobs(object sender, DoWorkEventArgs e)
         {
+            Thread.CurrentThread.Name = _name;
             while (true)
             {
                 if (_worker.CancellationPending)

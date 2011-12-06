@@ -89,6 +89,12 @@
     </Content>
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Rest.WindowsPhone\Rest.WindowsPhone.csproj">
+      <Project>{3761E013-0067-4886-86B7-3361095335C4}</Project>
+      <Name>Rest.WindowsPhone</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
