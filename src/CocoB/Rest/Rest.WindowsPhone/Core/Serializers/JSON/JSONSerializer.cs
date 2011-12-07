@@ -16,7 +16,7 @@ namespace CocoB.Rest.WindowsPhone.Core.Parsers
 	///   JSON uses Arrays and Objects. These correspond here to the datatypes ArrayList and Hashtable.
 	///   All numbers are parsed to doubles.
 	/// </summary>
-	public class JSON
+	public class JSONSerializer
 	{
 		private const int TOKEN_NONE = 0;
 		private const int TOKEN_CURLY_OPEN = 1;

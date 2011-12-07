@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+using CocoB.Rest.WindowsPhone.Core.Parsers;
 using Microsoft.Phone.Controls;
 
-namespace Rest.WindowsPhone.Sample
+namespace CocoB.Rest.WindowsPhone.Sample
 {
     public partial class MainPage : PhoneApplicationPage
     {
@@ -19,6 +11,16 @@ namespace Rest.WindowsPhone.Sample
         public MainPage()
         {
             InitializeComponent();
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            var json = "{\"name\":123,\"name2\":-456e8}";
+            var obj = JSON.JsonDecode(json);
+            var dict = new Dictionary<string, object>();
+            dict["hello"] = "asshole";
+            var seri = JSON.JsonEncode(dict);
+            int i = 0;
         }
     }
 }
