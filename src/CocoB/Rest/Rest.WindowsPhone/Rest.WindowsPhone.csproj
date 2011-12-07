@@ -55,6 +55,7 @@
     <Compile Include="Core\Concurrency\Worker.cs" />
     <Compile Include="Core\Concurrency\WorkerImpl.cs" />
     <Compile Include="Core\Logger\LogEntry.cs" />
+    <Compile Include="Core\Parsers\JSON.cs" />
     <Compile Include="Model\Model.cs" />
     <Compile Include="Network\HttpWebClient.cs" />
     <Compile Include="Network\HttpWebClientException.cs" />
