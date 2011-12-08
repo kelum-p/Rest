@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using CocoB.Rest.WindowsPhone.Core.Serializers;
+using CocoB.Rest.WindowsPhone.Core.Serializers.JSON;
 using CocoB.Rest.WindowsPhone.Network;
 
 namespace CocoB.Rest.WindowsPhone.Model
@@ -17,10 +19,12 @@ namespace CocoB.Rest.WindowsPhone.Model
     public class Model
     {
         private readonly HttpWebClient _webClient;
+        private readonly Serializer _serializer;
 
         public Model()
         {
             _webClient = CreateWebClient();
+            _serializer = CreateSerializer();
         }
 
         private HttpWebClient CreateWebClient()
@@ -31,6 +35,16 @@ namespace CocoB.Rest.WindowsPhone.Model
         internal virtual HttpWebClient InitializeWebClient()
         {
            return HttpWebClient.Create(Headers); 
+        }
+
+        private Serializer CreateSerializer()
+        {
+            return InitializeSerializer();
+        }
+
+        internal virtual Serializer InitializeSerializer()
+        {
+            return new JSONSerializer();
         }
 
         /// <summary>
