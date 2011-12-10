@@ -10,8 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using CocoB.Rest.WindowsPhone.Core.Exceptions;
 using CocoB.Rest.WindowsPhone.Core.Serializers;
-using CocoB.Rest.WindowsPhone.Core.Serializers.JSON;
 using CocoB.Rest.WindowsPhone.Network;
 
 namespace CocoB.Rest.WindowsPhone.Model
@@ -21,40 +21,36 @@ namespace CocoB.Rest.WindowsPhone.Model
         private readonly HttpWebClient _webClient;
         private readonly Serializer _serializer;
 
+        private Dictionary<string, object> _data;
+
         public Model()
+            : this(HttpWebClient.Create(), Serializer.Create(SerializerType.JSON))
         {
-            _webClient = CreateWebClient();
-            _serializer = CreateSerializer();
         }
 
-        private HttpWebClient CreateWebClient()
+        internal Model(HttpWebClient webClient, Serializer serializer)
         {
-            return InitializeWebClient();
-        }
-
-        internal virtual HttpWebClient InitializeWebClient()
-        {
-           return HttpWebClient.Create(Headers); 
-        }
-
-        private Serializer CreateSerializer()
-        {
-            return InitializeSerializer();
-        }
-
-        internal virtual Serializer InitializeSerializer()
-        {
-            return new JSONSerializer();
+            _webClient = webClient;
+            _serializer = serializer;
+            Encoding = Encoding.UTF8;
         }
 
         /// <summary>
-        /// Override to set custom HTTP headers
+        /// Custom HTTP headers
         /// Defaults to empty headers.
         /// </summary>
-        protected virtual Dictionary<string, string> Headers
-        {
-            get { return new Dictionary<string, string>(); }
-        }
+        public Dictionary<string, string> Headers { get; set; }
+
+        /// <summary>
+        /// Server end point
+        /// </summary>
+        public Uri Uri { get; set; }
+
+        /// <summary>
+        /// Set the response encoding.
+        /// Default  
+        /// </summary>
+        public Encoding Encoding { get; set; }
 
         /// <summary>
         /// Resets the model's state from the server.
@@ -62,9 +58,13 @@ namespace CocoB.Rest.WindowsPhone.Model
         /// </summary>
         /// <param name="success"> Called if the HTTP response is 200 </param>
         /// <param name="error"> Called if the HTTP response is other than 200 </param>
-        public virtual void Fetch(Action<Model> success, Action<HttpStatusCode> error)
+        public virtual void Fetch(Action<Model> success, Action<Exception> error)
         {
-            // TODO: Process non OK responses. Might have to include headers and response to error       
+            if (Uri == null)
+            {
+                throw new InvalidOperationException("Uri cannot be null");
+            }
+
             HttpResponseEventHandler handler = null;
             handler =
                 (sender, eventArgs) =>
@@ -73,35 +73,33 @@ namespace CocoB.Rest.WindowsPhone.Model
 
                     if (eventArgs.StatusCode == HttpStatusCode.OK)
                     {
-                        var response = eventArgs.Response;
-                        var decodedResponse = Encoding.GetString(response, 0, response.Length);
-                        Parse(decodedResponse); // TODO: call error on parse failure
-                        success(this);
+                        ProcessResponse(eventArgs, success, error);
                     }
                     else
                     {
-                        error(eventArgs.StatusCode);
+                        error(new NetworkException(eventArgs));
                     }
                 };
+
             _webClient.DoGETRequest(Uri);
         }
 
-        /// <summary>
-        /// Override to set the end point address of the server.
-        /// Defaults to http://localhost
-        /// </summary>
-        protected virtual Uri Uri
+        private void ProcessResponse(
+            HttpResponseEventArgs eventArgs, Action<Model> success, Action<Exception> error)
         {
-            get { return new Uri("http://localhost"); }
-        }
+            var response = eventArgs.Response;
+            var decodedResponse = Encoding.GetString(response, 0, response.Length);
 
-        /// <summary>
-        /// Override to set the encoding that will be used to decode the server response
-        /// Defaults to UTF8
-        /// </summary>
-        protected virtual Encoding Encoding
-        {
-            get { return Encoding.UTF8; }
+            _data = Parse(decodedResponse);
+            
+            if (_data != null)
+            {
+                success(this);
+            }
+            else
+            {
+                error(new ResponseParseException());
+            }
         }
 
         /// <summary>
@@ -109,9 +107,9 @@ namespace CocoB.Rest.WindowsPhone.Model
         /// </summary>
         /// <param name="response"> Decoded server response </param>
         /// <returns> Dictionary of parsed objects </returns>
-        protected virtual Dictionary<string, string> Parse(string response)
+        protected virtual Dictionary<string, object> Parse(string response)
         {
-            return new Dictionary<string, string>();
+            return new Dictionary<string, object>();
         }
     }
 }

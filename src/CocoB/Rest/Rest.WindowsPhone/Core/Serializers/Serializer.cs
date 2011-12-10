@@ -6,10 +6,17 @@
  *
  */
 
+using System;
 using System.Collections.Generic;
+using CocoB.Rest.WindowsPhone.Core.Serializers.JSON;
 
 namespace CocoB.Rest.WindowsPhone.Core.Serializers
 {
+    internal enum SerializerType
+    {
+        JSON
+    }
+
     internal abstract class Serializer
     {
         #region Methods
@@ -21,6 +28,18 @@ namespace CocoB.Rest.WindowsPhone.Core.Serializers
         public abstract string Serialize(Dictionary<string, object> model);
 
         public abstract string Serialize(List<object> collection);
+
+        public static Serializer Create(SerializerType serializerType)
+        {
+            switch (serializerType)
+            {
+                case SerializerType.JSON:
+                    return new JSONSerializer();
+                default:
+                    throw new InvalidOperationException(
+                        "Invalid serialization type - " + serializerType);
+            }
+        }
 
         #endregion
     }

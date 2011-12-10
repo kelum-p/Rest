@@ -24,8 +24,6 @@ namespace CocoB.Rest.WindowsPhone.Network
 
         private static readonly Logger Log = Logger.GetCurrentClassLogger();
 
-        private readonly Dictionary<string, string> _headers;
-
         private readonly Worker _networkWorker;
         private readonly long _timeout;
 
@@ -39,7 +37,7 @@ namespace CocoB.Rest.WindowsPhone.Network
             long timeout = DEFAULT_TIMEOUT)
         {
             _networkWorker = worker;
-            _headers = headers;
+            Headers = headers;
             _timeout = timeout;
         }
 
@@ -102,9 +100,9 @@ namespace CocoB.Rest.WindowsPhone.Network
             webRequest.AllowAutoRedirect = true;
             webRequest.AllowReadStreamBuffering = true;
 
-            foreach (string key in _headers.Keys)
+            foreach (var key in Headers.Keys)
             {
-                webRequest.Headers[key] = _headers[key];
+                webRequest.Headers[key] = Headers[key];
             }
 
             return webRequest;
@@ -113,8 +111,8 @@ namespace CocoB.Rest.WindowsPhone.Network
         private void BeginGetResponseWithTimeOut(HttpWebRequest webRequest)
         {
             WaitHandle waitHandle = new AutoResetEvent(false);
-            RegisteredWaitHandle timeoutHandle = RegisterTimeout(webRequest, waitHandle);
-            object[] requestParams = { webRequest, waitHandle, timeoutHandle };
+            var timeoutHandle = RegisterTimeout(webRequest, waitHandle);
+            object[] requestParams = {webRequest, waitHandle, timeoutHandle};
 
             webRequest.BeginGetResponse(ResponseCallback, requestParams);
         }
@@ -171,7 +169,7 @@ namespace CocoB.Rest.WindowsPhone.Network
         }
 
         private static HttpWebResponse EndGetResponseWithTimeout(
-            WebRequest webRequest, 
+            WebRequest webRequest,
             IAsyncResult result,
             WaitHandle waitHandle,
             RegisteredWaitHandle timeoutHandle)
@@ -185,7 +183,7 @@ namespace CocoB.Rest.WindowsPhone.Network
             HttpWebRequest webRequest, WaitHandle waitHandle)
         {
             return ThreadPool.RegisterWaitForSingleObject(
-                                waitHandle, TimeoutCallback, webRequest, _timeout, true);
+                waitHandle, TimeoutCallback, webRequest, _timeout, true);
         }
 
         private static void TimeoutCallback(object state, bool timeout)

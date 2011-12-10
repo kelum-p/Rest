@@ -76,7 +76,7 @@ namespace CocoB.Rest.WindowsPhone.Core.Concurrency
         private static Queue<Action> TransferJobs(Queue<Action> source)
         {
             var destination = new Queue<Action>();
-            foreach (Action networkJob in source)
+            foreach (var networkJob in source)
             {
                 destination.Enqueue(networkJob);
             }
@@ -87,7 +87,7 @@ namespace CocoB.Rest.WindowsPhone.Core.Concurrency
 
         private static void ProcessLocalJobs(IEnumerable<Action> jobs)
         {
-            foreach (Action networkJob in jobs)
+            foreach (var networkJob in jobs)
             {
                 networkJob();
             }
